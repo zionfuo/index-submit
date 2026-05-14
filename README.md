@@ -1,25 +1,25 @@
 # Astro SEO Index Submitter
 
-在 Astro 构建完成后自动将 sitemap.xml 中的 URL 提交到 Google Indexing API 和 Bing IndexNow，加速搜索引擎收录。
+Automatically submit URLs from your sitemap.xml to Google Indexing API and Bing IndexNow after Astro build completes, accelerating search engine indexing.
 
-## 功能
+## Features
 
-- 自动读取 sitemap.xml 并提交所有 URL
-- 同时提交到 Google Indexing API 和 Bing IndexNow
-- 自动生成 IndexNow API key 文件到 `public/` 目录
-- 按 robots.txt 过滤禁止抓取的页面
-- 支持 Dry Run 模式（测试不实际提交）
-- 作为 Astro Integration 安装，符合官方 API 规范
+- Reads sitemap.xml and submits all URLs automatically
+- Submits to both Google Indexing API and Bing IndexNow simultaneously
+- Generates IndexNow API key file to `public/` directory
+- Filters URLs disallowed by robots.txt
+- Supports Dry Run mode for testing without actual submission
+- Installs as an Astro Integration, following official API conventions
 
-## 安装
+## Installation
 
 ```bash
 npm install
 ```
 
-## 配置
+## Configuration
 
-在 `astro.config.mjs` 中注册插件：
+Register the plugin in `astro.config.mjs`:
 
 ```javascript
 import { defineConfig } from 'astro/config';
@@ -32,57 +32,57 @@ export default defineConfig({
 });
 ```
 
-## 环境变量
+## Environment Variables
 
-在 Cloudflare Pages（或你使用的 CI/CD）环境变量中添加：
+Add these in your Cloudflare Pages (or other CI/CD) environment variables:
 
-| 变量 | 必填 | 说明 |
-|------|------|------|
-| `GOOGLE_CREDENTIALS_JSON` | 是 | Google 服务账号 JSON 字符串（完整 JSON，不是文件路径） |
-| `INDEXNOW_API_KEY` | 是 | Bing IndexNow API key |
-| `INDEXNOW_HOST` | 是 | 网站域名，如 `example.com` |
-| `SITEMAP_URL` | 否 | sitemap 地址，默认 `{origin}/sitemap.xml` |
-| `DRY_RUN` | 否 | `true` 时只打日志不实际提交（用于测试） |
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GOOGLE_CREDENTIALS_JSON` | Yes | Google service account JSON string (full JSON, not a file path) |
+| `INDEXNOW_API_KEY` | Yes | Bing IndexNow API key |
+| `INDEXNOW_HOST` | Yes | Your website domain, e.g. `example.com` |
+| `SITEMAP_URL` | No | Sitemap URL, defaults to `{origin}/sitemap.xml` |
+| `DRY_RUN` | No | Set to `true` to log only without actual submission (for testing) |
 
-### Google 服务账号配置
+### Google Service Account Setup
 
-1. 在 [Google Cloud Console](https://console.cloud.google.com/) 创建项目
-2. 启用 **Indexing API** (`indexing.googleapis.com`)
-3. 创建服务账号，下载 JSON 密钥文件
-4. 将 JSON 文件内容完整复制到 `GOOGLE_CREDENTIALS_JSON` 环境变量
+1. Create a project in [Google Cloud Console](https://console.cloud.google.com/)
+2. Enable **Indexing API** (`indexing.googleapis.com`)
+3. Create a service account, download the JSON key
+4. Copy the entire JSON file content into the `GOOGLE_CREDENTIALS_JSON` environment variable
 
-### Bing IndexNow 配置
+### Bing IndexNow Setup
 
-1. 在 [Bing Webmaster Tools](https://www.bing.com/webmasters) 添加你的网站
-2. 获取 IndexNow API key（或使用 Bing 提供的 key）
-3. 设置 `INDEXNOW_API_KEY` 和 `INDEXNOW_HOST`
+1. Add your site in [Bing Webmaster Tools](https://www.bing.com/webmasters)
+2. Get your IndexNow API key (or use the key provided by Bing)
+3. Set `INDEXNOW_API_KEY` and `INDEXNOW_HOST`
 
-## 目录结构
+## Project Structure
 
 ```
 src/
   lib/
-    sitemap-parser.ts      # 解析 sitemap XML
-    robots-filter.ts       # 按 robots.txt 过滤 URL
-    google-indexer.ts      # Google Indexing API 客户端
-    indexnow-indexer.ts    # Bing IndexNow 客户端
-    key-file-generator.ts  # 生成 IndexNow key 文件
-    seo-submitter.ts       # 整合所有模块
+    sitemap-parser.ts      # Parse sitemap XML
+    robots-filter.ts       # Filter URLs by robots.txt rules
+    google-indexer.ts      # Google Indexing API client
+    indexnow-indexer.ts    # Bing IndexNow client
+    key-file-generator.ts  # Generate IndexNow key file
+    seo-submitter.ts       # Integration orchestration
   integrations/
-    seo-submitter.ts       # Astro Integration 插件
-astro.config.mjs           # 注册插件
+    seo-submitter.ts       # Astro Integration plugin
+astro.config.mjs           # Plugin registration
 ```
 
-## 工作流程
+## How It Works
 
-1. `astro build` 完成
-2. 读取 sitemap.xml 获取所有 URL
-3. 按 robots.txt 过滤
-4. 生成 `{INDEXNOW_API_KEY}.txt` 到 `public/` 目录
-5. 并行提交到 Google 和 Bing
-6. 输出提交结果日志
+1. `astro build` completes
+2. Read sitemap.xml to get all URLs
+3. Filter by robots.txt
+4. Generate `{INDEXNOW_API_KEY}.txt` to `public/` directory
+5. Submit to Google and Bing in parallel
+6. Output submission results to logs
 
-## 构建日志示例
+## Build Log Example
 
 ```
 [SEO Submitter] Starting submission...
