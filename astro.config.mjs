@@ -3,7 +3,11 @@ import { submitToSearchEngines } from './src/lib/seo-submitter';
 
 export default defineConfig({
   output: 'static',
-  integrations: [],
+  vite: {
+    ssr: {
+      noExternal: ['googleapis'],
+    },
+  },
   hooks: {
     'astro:build:done': async ({ dir, pages }) => {
       const googleCredentialsJson = process.env.GOOGLE_CREDENTIALS_JSON;
