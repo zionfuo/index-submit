@@ -11,7 +11,12 @@ export interface SeoSubmitterOptions {
   sitemapUrl?: string;
   publicDir: string;
   dryRun?: boolean;
+  googleDailyLimit?: number;
+  bingDailyLimit?: number;
 }
+
+const DEFAULT_GOOGLE_DAILY_LIMIT = 200;
+const DEFAULT_BING_DAILY_LIMIT = 200;
 
 export async function submitToSearchEngines(options: SeoSubmitterOptions): Promise<void> {
   const {
@@ -21,6 +26,8 @@ export async function submitToSearchEngines(options: SeoSubmitterOptions): Promi
     sitemapUrl,
     publicDir,
     dryRun = false,
+    googleDailyLimit = DEFAULT_GOOGLE_DAILY_LIMIT,
+    bingDailyLimit = DEFAULT_BING_DAILY_LIMIT,
   } = options;
 
   const origin = new URL(sitemapUrl || `https://${indexNowHost}/sitemap.xml`).origin;
@@ -69,14 +76,24 @@ export async function submitToSearchEngines(options: SeoSubmitterOptions): Promi
   }
 
   // 4. Submit to Google and Bing in parallel
+  const googleUrls = allowedUrls.slice(0, googleDailyLimit);
+  const bingUrls = allowedUrls.slice(0, bingDailyLimit);
+
+  if (googleUrls.length < allowedUrls.length) {
+    console.log(`[SEO Submitter] Google: limiting to ${googleDailyLimit} URLs (total: ${allowedUrls.length})`);
+  }
+  if (bingUrls.length < allowedUrls.length) {
+    console.log(`[SEO Submitter] Bing: limiting to ${bingDailyLimit} URLs (total: ${allowedUrls.length})`);
+  }
+
   const results = await Promise.allSettled([
     (async () => {
       const indexer = new GoogleIndexer({ credentialsJson: googleCredentialsJson });
-      return await indexer.submitUrls(allowedUrls);
+      return await indexer.submitUrls(googleUrls);
     })(),
     (async () => {
       const indexer = new IndexNowIndexer({ apiKey: indexNowApiKey, host: indexNowHost });
-      return await indexer.submitUrls(allowedUrls);
+      return await indexer.submitUrls(bingUrls);
     })(),
   ]);
 

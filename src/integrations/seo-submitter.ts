@@ -7,6 +7,8 @@ interface SeoSubmitterIntegrationOptions {
   indexNowHost?: string;
   sitemapUrl?: string;
   dryRun?: boolean;
+  googleDailyLimit?: number;
+  bingDailyLimit?: number;
 }
 
 function createSeoSubmitterIntegration(options: SeoSubmitterIntegrationOptions = {}): AstroIntegration {
@@ -19,6 +21,8 @@ function createSeoSubmitterIntegration(options: SeoSubmitterIntegrationOptions =
         const indexNowHost = options.indexNowHost || process.env.INDEXNOW_HOST;
         const sitemapUrl = options.sitemapUrl || process.env.SITEMAP_URL;
         const dryRun = options.dryRun !== undefined ? options.dryRun : process.env.DRY_RUN === 'true';
+        const googleDailyLimit = options.googleDailyLimit || parseInt(process.env.GOOGLE_DAILY_LIMIT || '200', 10);
+        const bingDailyLimit = options.bingDailyLimit || parseInt(process.env.BING_DAILY_LIMIT || '200', 10);
 
         if (!googleCredentialsJson || !indexNowApiKey || !indexNowHost) {
           console.log('[SEO Submitter] Missing required environment variables, skipping');
@@ -32,6 +36,8 @@ function createSeoSubmitterIntegration(options: SeoSubmitterIntegrationOptions =
           sitemapUrl,
           publicDir: dir.pathname,
           dryRun,
+          googleDailyLimit,
+          bingDailyLimit,
         });
       },
     },

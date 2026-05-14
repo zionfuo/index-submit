@@ -43,6 +43,8 @@ export default defineConfig({
 | `INDEXNOW_HOST` | 是 | 网站域名，如 `example.com` |
 | `SITEMAP_URL` | 否 | sitemap 地址，默认 `{origin}/sitemap.xml` |
 | `DRY_RUN` | 否 | `true` 时只打日志不实际提交（用于测试） |
+| `GOOGLE_DAILY_LIMIT` | 否 | Google 每日提交限额，默认 200 |
+| `BING_DAILY_LIMIT` | 否 | Bing 每日提交限额，默认 200 |
 
 ### Google 服务账号配置
 

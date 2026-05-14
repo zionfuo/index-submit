@@ -43,6 +43,8 @@ Add these in your Cloudflare Pages (or other CI/CD) environment variables:
 | `INDEXNOW_HOST` | Yes | Your website domain, e.g. `example.com` |
 | `SITEMAP_URL` | No | Sitemap URL, defaults to `{origin}/sitemap.xml` |
 | `DRY_RUN` | No | Set to `true` to log only without actual submission (for testing) |
+| `GOOGLE_DAILY_LIMIT` | No | Google daily submission limit, defaults to 200 |
+| `BING_DAILY_LIMIT` | No | Bing daily submission limit, defaults to 200 |
 
 ### Google Service Account Setup
 
