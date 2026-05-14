@@ -1,0 +1,32 @@
+{
+  "name": "index-submit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zionfuo/index-submit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/zionfuo/index-submit/issues"
+  },
+  "homepage": "https://github.com/zionfuo/index-submit#readme",
+  "dependencies": {
+    "fast-xml-parser": "^5.8.0",
+    "googleapis": "^171.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.7.0",
+    "typescript": "^6.0.3"
+  }
+}
